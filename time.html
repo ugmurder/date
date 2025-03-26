@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高精度时间显示（小冯时刻）</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+        
+        .time-container {
+            text-align: center;
+            background: white;
+            border-radius: 16px;
+            padding: 40px 60px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 80%;
+        }
+        
+        .time-display {
+            font-size: 5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .date-display {
+            font-size: 1.5rem;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        
+        .milliseconds {
+            font-size: 0.6em;
+            vertical-align: super;
+            color: #e74c3c;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #95a5a6;
+        }
+        
+        @media (max-width: 768px) {
+            .time-display {
+                font-size: 3rem;
+            }
+            
+            .date-display {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="time-container">
+        <div class="date-display" id="date"></div>
+        <div class="time-display" id="time"></div>
+        <div class="footer">高精度时间显示（小冯时刻） · 精确到毫秒级</div>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            
+            // 格式化日期
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                weekday: 'long' 
+            };
+            document.getElementById('date').textContent = now.toLocaleDateString('zh-CN', options);
+            
+            // 格式化时间（精确到毫秒）
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const milliseconds = String(now.getMilliseconds()).padStart(3, '0').substring(0, 2);
+            
+            document.getElementById('time').innerHTML = 
+                `${hours}:${minutes}:${seconds}<span class="milliseconds">.${milliseconds}</span>`;
+        }
+        
+        // 初始更新
+        updateTime();
+        
+        // 每10毫秒更新一次，以实现流畅显示
+        setInterval(updateTime, 10);
+    </script>
+</body>
+</html>
